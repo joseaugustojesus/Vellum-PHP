@@ -2,8 +2,6 @@
 
 namespace src\controllers;
 
-use src\database\Model;
-use src\database\models\Example;
 use src\support\View;
 
 class ExampleController
@@ -11,8 +9,9 @@ class ExampleController
    
     function example(): View
     {
-        // (new \src\services\ExampleService)->example();
+        (new \src\services\ExampleService)->example();
         // dump("this is example controller saying hello for you! >:D");
+        var_dump("Im Using xXdebug");
         return View::render("404", []);
     }
 }

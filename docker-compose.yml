@@ -15,7 +15,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: secret
     volumes:
-      - "..docker/mysql:/var/lib/mysql"
+      - "../docker/mysql:/var/lib/mysql"
   adminer:
     image: adminer
     restart: always
