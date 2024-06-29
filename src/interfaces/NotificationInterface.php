@@ -11,6 +11,4 @@ interface NotificationInterface
     function error(string $message): void;
 
     function warning(string $message): void;
-
-    function back(): void;
 }

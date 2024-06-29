@@ -23,3 +23,10 @@ function js_directory($path = '')
 {
     return $_ENV["APP_URL"]  . "/public/js{$path}";
 }
+
+
+
+function images_directory($path = '')
+{
+    return $_ENV["APP_URL"] . "/public/images/{$path}";
+}

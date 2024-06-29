@@ -12,7 +12,6 @@ class Notification implements NotificationInterface
     function success(string $message): void
     {
         notification($message, "success");
-        $this->back();
     }
 
     /**
@@ -21,7 +20,6 @@ class Notification implements NotificationInterface
     function info(string $message): void
     {
         notification($message, "info");
-        $this->back();
     }
 
     /**
@@ -30,7 +28,6 @@ class Notification implements NotificationInterface
     function error(string $message): void
     {
         notification($message, "error");
-        $this->back();
     }
 
     /**
@@ -39,12 +36,5 @@ class Notification implements NotificationInterface
     function warning(string $message): void
     {
         notification($message, "warning");
-        $this->back();
-    }
-
-    function back(): void
-    {
-        redirect(url_back());
-        die;
     }
 }
