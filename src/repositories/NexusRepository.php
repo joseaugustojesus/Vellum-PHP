@@ -4,14 +4,10 @@ namespace src\repositories;
 
 use PDO;
 use PDOException;
-use Ramsey\Uuid\Uuid;
-use src\database\Database;
-use src\database\Model;
-use src\interfaces\NexusRepositoryInterface;
 
 
 
-class NexusRepository implements NexusRepositoryInterface
+class NexusRepository
 {
 
     private PDO $db;
@@ -19,21 +15,22 @@ class NexusRepository implements NexusRepositoryInterface
     private string $queryString;
     /** @var array<string, mixed> */
     private array $bind;
-    private Model $model;
     private bool $selectIsOne;
 
-    public function __construct()
+    function configDatabase(PDO $db)
     {
-        $this->db = (new Database)->connect();
+        $this->db = $db;
+        return $this;
     }
 
     /**
-     * @param string $table
+     * @param array $data
      * @return self
      */
-    function insert(string $table): self
+    function insert(array $data): self
     {
-        $this->queryString = "INSERT INTO {$table}";
+        $this->queryString = "INSERT INTO {$this->table}";
+        $this->values($data);
         return $this;
     }
 
@@ -43,7 +40,6 @@ class NexusRepository implements NexusRepositoryInterface
      */
     function values(array $binds = []): self
     {
-        $binds["id"] = Uuid::uuid4()->toString();
         $this->bind = $binds;
         $keys = implode(", ", array_keys($binds));
         $keysUsingInBind = ":" . implode(", :", array_keys($binds));
@@ -175,7 +171,7 @@ class NexusRepository implements NexusRepositoryInterface
     /**
      * @return object|array<int, object>|bool
      */
-    function make(): object|array|bool
+    function finish(): object|array|bool
     {
         try {
             $firstWord = strstr($this->queryString, ' ', true);
@@ -196,10 +192,8 @@ class NexusRepository implements NexusRepositoryInterface
                 $stmt->execute($this->bind ?? []);
 
 
-                if (isset($this->model))
-                    $stmt->setFetchMode(PDO::FETCH_CLASS, get_class($this->model));
-                else
-                    $stmt->setFetchMode(PDO::FETCH_OBJ);
+
+                $stmt->setFetchMode(PDO::FETCH_OBJ);
 
                 if ($this->selectIsOne) {
                     return $stmt->fetch();
@@ -208,6 +202,7 @@ class NexusRepository implements NexusRepositoryInterface
                 }
             }
         } catch (PDOException $e) {
+            dd($e);
             return false;
         }
     }
@@ -299,22 +294,12 @@ class NexusRepository implements NexusRepositoryInterface
         return $this;
     }
 
-    /**
-     * @param Model $model
-     * @return self
-     */
-    function model(Model $model): self
-    {
-        $this->model = $model;
-        $this->table = $this->model->getTable();
-        return $this;
-    }
 
     /**
      * @param string $table
      * @return self
      */
-    function setTable(string $table): self
+    function table(string $table): self
     {
         $this->table = $table;
         return $this;
@@ -335,16 +320,7 @@ class NexusRepository implements NexusRepositoryInterface
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    function save(): bool
-    {
-        $binds = array_diff_key(get_object_vars($this->model), array_flip(["table"]));
-        /** @var bool */
-        $saved = $this->insert($this->model->getTable())->values($binds)->make();
-        return $saved;
-    }
+
 
     /**
      * @return self

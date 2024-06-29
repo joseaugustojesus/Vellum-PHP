@@ -7,6 +7,11 @@ use src\support\Request as httpRequest;
 abstract class Request
 {
 
+    function __construct()
+    {
+        $this->execute();
+    }
+
     /** @var array<string, string> */
     protected array $rules;
 
