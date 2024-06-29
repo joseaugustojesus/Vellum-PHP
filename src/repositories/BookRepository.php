@@ -14,6 +14,6 @@ class BookRepository extends NexusRepository
 
     function get()
     {
-        return $this->table("books")->select()->finish();
+        return $this->table("books")->select()->pagination();
     }
 }

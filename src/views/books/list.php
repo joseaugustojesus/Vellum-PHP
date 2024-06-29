@@ -1,4 +1,4 @@
-<table>
+<table class="mb-3">
     <thead>
         <tr>
             <th>ID</th>
@@ -9,7 +9,7 @@
     </thead>
 
     <tbody>
-        <?php foreach ($books as $book) { ?>
+        <?php foreach ($books->paginated as $book) { ?>
             <tr>
                 <td><?= $book->id ?></td>
                 <td><?= $book->name ?></td>
@@ -19,3 +19,5 @@
         <?php } ?>
     </tbody>
 </table>
+
+<?= $books->links ?>

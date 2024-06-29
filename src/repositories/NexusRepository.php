@@ -365,4 +365,46 @@ class NexusRepository
         $this->db->rollback();
         return false;
     }
+
+
+    /**
+     * @param int $offset
+     */
+    function offset(int $offset): self
+    {
+        $this->queryString .= " OFFSET {$offset}";
+        return $this;
+    }
+
+     /**
+     * @param string $column
+     * @param string $type
+     */
+    function order(string $column, string $type): self
+    {
+        $this->queryString .= " ORDER BY {$column} {$type}";
+        return $this;
+    }
+
+
+    function pagination(int $rowsPerPage = 5)
+    {
+        $raw = $this->finish();
+        $pagina = (isset($_GET['page']) ? $_GET['page'] : 1) - 1;
+        $offset = $pagina * $rowsPerPage;
+        $paginated = $this->order("id", "DESC")->limit($rowsPerPage)->offset($offset)->finish(0);
+        $quantitiesOfPages = ceil(count($raw) / $rowsPerPage);
+        $links = pagination($quantitiesOfPages);
+        return (object) (
+            [
+                'raw' => $raw,
+                'currentPage' => $pagina  + 1,
+                'offset' => $offset,
+                'paginated' => $paginated,
+                "quantitiesOfPages" => $quantitiesOfPages,
+                'quantitiesPerPage' => $rowsPerPage,
+                'links' => $links
+            ]
+        );
+    }
 }
