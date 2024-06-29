@@ -1,0 +1,5 @@
+Tasks:
+    make crud book:
+        list:
+            ☐ Create view
+            ☐ get data from db
