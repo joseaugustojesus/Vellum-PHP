@@ -19,6 +19,11 @@ class BookService
         $this->bookRepository = $this->bookRepository->configDatabase($this->localInstance->db());
     }
 
+    function get()
+    {
+        return $this->bookRepository->get();
+    }
+
     /**
      * @param BookStoreRequest $request
      * @return Redirect

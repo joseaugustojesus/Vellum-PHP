@@ -1,8 +1,21 @@
-<?= $this->layout("templates/base", [
-    "title_in_card" => "Meus Livros Preferidos"
-]) ?>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Autor</th>
+            <th>Publicação</th>
+        </tr>
+    </thead>
 
-
-
-
-<?= $this->insert("books/list_empty") ?>
+    <tbody>
+        <?php foreach ($books as $book) { ?>
+            <tr>
+                <td><?= $book->id ?></td>
+                <td><?= $book->name ?></td>
+                <td><?= $book->author ?></td>
+                <td><?= dateAmericanToBrazilian($book->published_at) ?></td>
+            </tr>
+        <?php } ?>
+    </tbody>
+</table>

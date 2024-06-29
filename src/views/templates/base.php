@@ -46,11 +46,8 @@
                 <div class="screen-name-and-logo">
 
                     <?php if (!empty($url_back)) { ?>
-                        <a href="<?= $url_back ?>" class="text-muted">
-                            <small class="d-flex align-items-center justify-content-center">
-                                <i class="fa-solid fa-arrow-left me-2"></i>
-                                voltar
-                            </small>
+                        <a href="<?= $url_back ?>" class="text-muted fs-6">
+                            <p class="m-0 d-flex align-items-center"> <i class="ph ph-arrow-left me-2"></i> voltar</p>
                         </a>
                     <?php } ?>
 

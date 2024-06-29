@@ -11,4 +11,9 @@ class BookRepository extends NexusRepository
     {
         $this->table("books")->insert($data)->finish();
     }
+
+    function get()
+    {
+        return $this->table("books")->select()->finish();
+    }
 }

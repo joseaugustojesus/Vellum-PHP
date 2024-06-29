@@ -1,5 +1,6 @@
 <?= $this->layout("templates/base", [
-    "title_in_card" => "Cadastrar Livro"
+    "title_in_card" => "Cadastrar Livro",
+    "url_back" => route("/books")
 ]) ?>
 
 
@@ -25,7 +26,9 @@
 
         <!-- submit -->
         <div class="col-12">
-            <button type="submit" class="btn btn-company float-end">Salvar Livro</button>
+            <button type="submit" class="btn btn-company float-end d-flex align-items-center justify-content-center">Salvar <i class="ph ph-paper-plane-tilt ms-1"></i>
+
+</button>
         </div>
     </div>
 </form>

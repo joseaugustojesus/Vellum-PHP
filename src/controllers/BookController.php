@@ -18,7 +18,9 @@ class BookController
 
     function list(): View
     {
-        return View::render("books.list", []);
+        return View::render("books.index", [
+            'books' => $this->bookService->get()
+        ]);
     }
 
 
