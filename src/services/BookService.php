@@ -44,4 +44,21 @@ class BookService
             return Redirect::to("/books");
         }
     }
+
+
+    /**
+     * @param int $id
+     * @return Redirect
+     */
+    function delete(int $id): Redirect
+    {
+        try {
+            $this->bookRepository->destroy($id);
+            $this->notification->success("O livro foi deletado com sucesso");
+        } catch (PDOException $e) {
+            $this->notification->error("Whoops, não foi possível excluir o livro");
+        } finally {
+            return Redirect::to("/books");
+        }
+    }
 }

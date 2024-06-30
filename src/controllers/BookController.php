@@ -24,7 +24,7 @@ class BookController
     }
 
 
-    function create()
+    function create(): View
     {
         return View::render("books.create", []);
     }
@@ -32,5 +32,10 @@ class BookController
     function store(BookStoreRequest $request): Redirect
     {
         return $this->bookService->store($request);
+    }
+
+    function delete(int $id)
+    {
+        return $this->bookService->delete($id);
     }
 }

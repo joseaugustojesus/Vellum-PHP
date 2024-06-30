@@ -1,7 +1,5 @@
 // The below variable stores the application base url, example: http://192.167.44.252/amsted/example-directory
-const APP_URL = `${window.location.protocol}//${window.location.host}/${
-  window.location.pathname.split("/")[1]
-}`;
+const APP_URL = `${window.location.protocol}//${window.location.host}`;
 
 /**
  * Responsible for obtaining Query String parameters
