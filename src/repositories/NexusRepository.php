@@ -11,18 +11,12 @@ use stdClass;
 class NexusRepository
 {
 
-    private PDO $db;
+    public PDO $db;
     private string $table;
     private string $queryString;
     /** @var array<string, mixed> */
     private array $bind;
     private bool $selectIsOne;
-
-    function configDatabase(PDO $db)
-    {
-        $this->db = $db;
-        return $this;
-    }
 
     /**
      * @param array $data

@@ -3,45 +3,17 @@
 namespace src\repositories;
 
 use src\repositories\NexusRepository;
-use stdClass;
+use src\traits\Repository;
 
-class BookRepository extends NexusRepository
+class BookRepository
 {
+    private string $table;
 
-    /**
-     * @param array $data
-     * @return bool
-     */
-    function store(array $data): bool
-    {
-        return $this->table("books")->insert($data)->finish();
+    function __construct(
+        private NexusRepository $nexus
+    ) {
+        $this->table = 'books';
     }
 
-    /**
-     * @return stdClass
-     */
-    function get(): stdClass
-    {
-        return $this->table("books")->select()->pagination();
-    }
-
-
-    function getById(int $id): stdClass|bool
-    {
-        return $this->table('books')->selectOne()->where("id", "=", $id)->finish();
-    }
-
-    /**
-     * @param int $id
-     * @return bool
-     */
-    function destroy(int $id): bool
-    {
-        return $this->table('books')->delete()->where('id', "=", $id)->finish();
-    }
-
-    function rebuild(int $id, array $data)
-    {
-        return $this->table('books')->update($data)->where("id", "=", $id)->finish();
-    }
+    use Repository;
 }

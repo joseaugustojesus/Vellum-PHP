@@ -2,16 +2,12 @@
 
 namespace src\services;
 
-use Exception;
-use PDOException;
 use src\database\LocalInstance;
 use src\exceptions\NotFoundException;
-use src\exceptions\SaveFailedException;
 use src\repositories\BookRepository;
 use src\requests\books\BookStoreRequest;
 use src\requests\books\BookUpdateRequest;
 use src\support\Notification;
-use src\support\Redirect;
 use stdClass;
 
 class BookService
@@ -27,7 +23,7 @@ class BookService
 
     function get(): stdClass
     {
-        return $this->bookRepository->get();
+        return $this->bookRepository->pagination();
     }
 
     function getById(int $id): stdClass|bool
@@ -66,6 +62,6 @@ class BookService
     function update(BookUpdateRequest $request): void
     {
         $book = $this->getById($request->get('id'));
-        $this->bookRepository->rebuild($book->id, $request->get());
+        $this->bookRepository->update($book->id, $request->get());
     }
 }
