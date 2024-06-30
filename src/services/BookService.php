@@ -6,6 +6,7 @@ use Exception;
 use PDOException;
 use src\database\LocalInstance;
 use src\exceptions\NotFoundException;
+use src\exceptions\SaveFailedException;
 use src\repositories\BookRepository;
 use src\requests\books\BookStoreRequest;
 use src\support\Notification;
@@ -32,43 +33,38 @@ class BookService
     {
         $book = $this->bookRepository->getById($id);
         if (!$book)
-            throw new NotFoundException("Não foi possível encontrar nenhum livro com o ID: {$id}");
+            throw new NotFoundException("Não foi possível encontrar nenhum livro com o ID: {$id}", 404);
         return $book;
-    } 
+    }
 
     /**
      * @param BookStoreRequest $request
-     * @return Redirect
+     * @return void
      */
-    function store(BookStoreRequest $request): Redirect
+    function store(BookStoreRequest $request): void
     {
         try {
-            $this->bookRepository->transactionBegin();
             $this->bookRepository->store($request->get());
-            $this->bookRepository->transactionCommit();
-
-            $this->notification->success("Livro salvo com sucesso");
         } catch (PDOException $e) {
-            $this->notification->error("Whoops, não foi possível salvar os dados do livro");
-        } finally {
-            return Redirect::to("/books");
+            throw new SaveFailedException("Não foi possível salvar os dados do livro", $e->getCode());
         }
     }
 
 
     /**
      * @param int $id
-     * @return Redirect
+     * @return void
      */
-    function delete(int $id): Redirect
+    function delete(int $id): void
     {
         try {
+            $this->getById($id);
             $this->bookRepository->destroy($id);
-            $this->notification->success("O livro foi deletado com sucesso");
-        } catch (PDOException $e) {
-            $this->notification->error("Whoops, não foi possível excluir o livro");
-        } finally {
-            return Redirect::to("/books");
+        } catch (Exception $e) {
+            throw new NotFoundException(
+                message: $e->getMessage(),
+                code: $e->getCode()
+            );
         }
     }
 }

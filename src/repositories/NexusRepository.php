@@ -4,6 +4,7 @@ namespace src\repositories;
 
 use PDO;
 use PDOException;
+use src\exceptions\SynxtaxDBException;
 use src\exceptions\TableNotExistsException;
 use stdClass;
 
@@ -211,7 +212,9 @@ class NexusRepository
             $errorCode = $e->errorInfo[0];
             $errorMessage = $e->errorInfo[2];
             if ($errorCode === "42S02")
-                throw new TableNotExistsException($errorMessage);
+                throw new TableNotExistsException($errorMessage, $errorCode);
+            else if ($errorCode === "42000")
+                throw new SynxtaxDBException("Whoops, aconteceu um problema. 🙁", $errorCode);
         }
     }
 
