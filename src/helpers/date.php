@@ -1,5 +1,11 @@
 <?php
 
+
+function timestampToDate(string $timestamp)
+{
+    return (new DateTime($timestamp))->format('Y-m-d');
+}
+
 /**
  * Returns the current date in American format
  * @return string
@@ -37,7 +43,7 @@ function dateAmericanToBrazilian(string $date): string
 function dateBrazilianToAmerican(string $date): ?string
 {
     $dateTime = (DateTime::createFromFormat('d/m/Y', $date));
-    if($dateTime instanceof \DateTime){
+    if ($dateTime instanceof \DateTime) {
         return $dateTime->format("Y-m-d");
     }
     return null;

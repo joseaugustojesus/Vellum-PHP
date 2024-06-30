@@ -43,7 +43,6 @@ class BookController
     function edit(int $id)
     {
         try {
-            dd($this->bookService->getById($id));
             return View::render("books.edit", [
                 'book' => $this->bookService->getById($id)
             ]);
