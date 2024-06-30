@@ -4,6 +4,7 @@ namespace src\repositories;
 
 use PDO;
 use PDOException;
+use src\exceptions\TableNotExistsException;
 use stdClass;
 
 class NexusRepository
@@ -195,14 +196,22 @@ class NexusRepository
                 $stmt->setFetchMode(PDO::FETCH_OBJ);
 
                 if ($this->selectIsOne) {
-                    return $stmt->fetch();
+                    $found = $stmt->fetch();
+                    if (!$found)
+                        return false;
+                    return $found;
                 } else {
-                    return $stmt->fetchAll();
+                    $found = $stmt->fetchAll();
+                    if (!$found)
+                        return false;
+                    return $found;
                 }
             }
         } catch (PDOException $e) {
-            dd($e);
-            return false;
+            $errorCode = $e->errorInfo[0];
+            $errorMessage = $e->errorInfo[2];
+            if ($errorCode === "42S02")
+                throw new TableNotExistsException($errorMessage);
         }
     }
 

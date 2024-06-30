@@ -25,6 +25,12 @@ class BookRepository extends NexusRepository
         return $this->table("books")->select()->pagination();
     }
 
+
+    function getById(int $id): stdClass|bool
+    {
+        return $this->table('books')->selectOne()->where("id", "=", $id)->finish();
+    }
+
     /**
      * @param int $id
      * @return bool

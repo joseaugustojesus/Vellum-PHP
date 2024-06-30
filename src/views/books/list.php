@@ -18,7 +18,7 @@
                 <td><?= dateAmericanToBrazilian($book->published_at) ?></td>
                 <td>
                     <div class="btn-group" role="group">
-                        <a href="<?= route("/book/edit/{$book->id}") ?>" class="btn btn-warning"><i class="ph ph-pencil"></i></a>
+                        <a href="<?= route("/books/edit/{$book->id}") ?>" class="btn btn-warning"><i class="ph ph-pencil"></i></a>
                         <button type="button" class="btn btn-danger" onclick="confirm.destroy(this)" data-id="<?= $book->id ?>"><i class="ph ph-trash"></i></button>
                     </div>
                 </td>

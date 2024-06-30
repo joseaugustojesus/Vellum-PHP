@@ -2,8 +2,10 @@
 
 namespace src\services;
 
+use Exception;
 use PDOException;
 use src\database\LocalInstance;
+use src\exceptions\NotFoundException;
 use src\repositories\BookRepository;
 use src\requests\books\BookStoreRequest;
 use src\support\Notification;
@@ -25,6 +27,14 @@ class BookService
     {
         return $this->bookRepository->get();
     }
+
+    function getById(int $id): stdClass|bool
+    {
+        $book = $this->bookRepository->getById($id);
+        if (!$book)
+            throw new NotFoundException("Não foi possível encontrar nenhum livro com o ID: {$id}");
+        return $book;
+    } 
 
     /**
      * @param BookStoreRequest $request
