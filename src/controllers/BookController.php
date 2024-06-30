@@ -32,42 +32,33 @@ class BookController
         return View::render("books.create", []);
     }
 
-    /**
-     * @param BookStoreRequest $request
-     * @return Redirect
-     */
     function store(BookStoreRequest $request): Redirect
     {
         try {
             $this->bookService->store($request);
             $this->notification->success("Livro salvo com sucesso");
         } catch (Exception $e) {
-            $this->notification->error($e->getMessage())->info("Caso o erro persista, realize a abertura de um helpdesk e informe o código: {$e->getCode()}");
+            $this->notification
+                ->error($e->getMessage())
+                ->info("Error code: {$e->getCode()}");
         }
         return Redirect::to('/books');
     }
 
-
-    /**
-     * @param int $id
-     * @return Redirect
-     */
     function delete(int $id): Redirect
     {
         try {
             $this->bookService->delete($id);
             $this->notification->success("Livro excluído com sucesso");
         } catch (Exception $e) {
-            $this->notification->error($e->getMessage())->info("Caso o erro persista, realize a abertura de um helpdesk e informe o código: {$e->getCode()}");
+            $this->notification
+                ->error($e->getMessage())
+                ->info("Error code: {$e->getCode()}");
         }
 
         return Redirect::to('/books');
     }
 
-    /**
-     * @param int $id
-     * @return View|Redirect
-     */
     function edit(int $id): View|Redirect
     {
         try {
@@ -75,19 +66,22 @@ class BookController
                 'book' => $this->bookService->getById($id)
             ]);
         } catch (Exception $e) {
-            $this->notification->error($e->getMessage())->info("Caso o erro persista, realize a abertura de um helpdesk e informe o código: {$e->getCode()}");
+            $this->notification
+                ->error($e->getMessage())
+                ->info("Error code: {$e->getCode()}");
             return  Redirect::to('/books');
         }
     }
 
-
-    function update(BookUpdateRequest $request)
+    function update(BookUpdateRequest $request): Redirect
     {
         try {
             $this->bookService->update($request);
             $this->notification->success("Livro atualizado com sucesso");
         } catch (Exception $e) {
-            $this->notification->error($e->getMessage())->info("Cód. Erro: {$e->getCode()}");
+            $this->notification
+                ->error($e->getMessage())
+                ->info("Error code: {$e->getCode()}");
         }
         return Redirect::to('/books');
     }
