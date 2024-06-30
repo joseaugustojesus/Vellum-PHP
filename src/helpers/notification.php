@@ -25,7 +25,7 @@ function viewingNotifications(): void
 {
     if (isset($_SESSION["notifications"])) {
         foreach ($_SESSION["notifications"] as $toastKey => $toast) {
-            $message = $toast['message'];
+            $message = str_replace("'", "\'", $toast['message']);
             $type = $toast['type'];
             $local = $toast["local"];
             $timeRemove = $toast["time"];
