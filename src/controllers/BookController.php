@@ -5,6 +5,7 @@ namespace src\controllers;
 use Exception;
 use PDO;
 use src\requests\books\BookStoreRequest;
+use src\requests\books\BookUpdateRequest;
 use src\services\BookService;
 use src\support\Notification;
 use src\support\Redirect;
@@ -77,5 +78,17 @@ class BookController
             $this->notification->error($e->getMessage())->info("Caso o erro persista, realize a abertura de um helpdesk e informe o código: {$e->getCode()}");
             return  Redirect::to('/books');
         }
+    }
+
+
+    function update(BookUpdateRequest $request)
+    {
+        try {
+            $this->bookService->update($request);
+            $this->notification->success("Livro atualizado com sucesso");
+        } catch (Exception $e) {
+            $this->notification->error($e->getMessage())->info("Cód. Erro: {$e->getCode()}");
+        }
+        return Redirect::to('/books');
     }
 }

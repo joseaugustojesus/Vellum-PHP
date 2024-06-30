@@ -39,4 +39,9 @@ class BookRepository extends NexusRepository
     {
         return $this->table('books')->delete()->where('id', "=", $id)->finish();
     }
+
+    function rebuild(int $id, array $data)
+    {
+        return $this->table('books')->update($data)->where("id", "=", $id)->finish();
+    }
 }

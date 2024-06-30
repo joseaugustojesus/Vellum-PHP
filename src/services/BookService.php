@@ -9,6 +9,7 @@ use src\exceptions\NotFoundException;
 use src\exceptions\SaveFailedException;
 use src\repositories\BookRepository;
 use src\requests\books\BookStoreRequest;
+use src\requests\books\BookUpdateRequest;
 use src\support\Notification;
 use src\support\Redirect;
 use stdClass;
@@ -43,11 +44,7 @@ class BookService
      */
     function store(BookStoreRequest $request): void
     {
-        try {
-            $this->bookRepository->store($request->get());
-        } catch (PDOException $e) {
-            throw new SaveFailedException("Não foi possível salvar os dados do livro", $e->getCode());
-        }
+        $this->bookRepository->store($request->get());
     }
 
 
@@ -57,14 +54,18 @@ class BookService
      */
     function delete(int $id): void
     {
-        try {
-            $this->getById($id);
-            $this->bookRepository->destroy($id);
-        } catch (Exception $e) {
-            throw new NotFoundException(
-                message: $e->getMessage(),
-                code: $e->getCode()
-            );
-        }
+        $this->getById($id);
+        $this->bookRepository->destroy($id);
+    }
+
+
+    /**
+     * @param BookUpdateRequest $request
+     * @return void
+     */
+    function update(BookUpdateRequest $request): void
+    {
+        $book = $this->getById($request->get('id'));
+        $this->bookRepository->rebuild($book->id, $request->get());
     }
 }

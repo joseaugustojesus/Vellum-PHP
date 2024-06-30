@@ -5,8 +5,10 @@
 
 
 
-<form action="<?= route("/books/store") ?>" method="POST">
+<form action="<?= route("/books/update") ?>" method="POST">
     <div class="row g-3">
+
+        <input type="hidden" id="id" name="id" value="<?= $book->id ?>">
 
         <!-- Fields -->
         <div class="col-12 col-md-4">
