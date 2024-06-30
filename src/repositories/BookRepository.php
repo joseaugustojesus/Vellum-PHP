@@ -3,6 +3,7 @@
 namespace src\repositories;
 
 use src\repositories\NexusRepository;
+use stdClass;
 
 class BookRepository extends NexusRepository
 {
@@ -12,7 +13,7 @@ class BookRepository extends NexusRepository
         $this->table("books")->insert($data)->finish();
     }
 
-    function get()
+    function get(): stdClass
     {
         return $this->table("books")->select()->pagination();
     }

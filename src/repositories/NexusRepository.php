@@ -4,8 +4,7 @@ namespace src\repositories;
 
 use PDO;
 use PDOException;
-
-
+use stdClass;
 
 class NexusRepository
 {
@@ -376,7 +375,7 @@ class NexusRepository
         return $this;
     }
 
-     /**
+    /**
      * @param string $column
      * @param string $type
      */
@@ -387,24 +386,25 @@ class NexusRepository
     }
 
 
-    function pagination(int $rowsPerPage = 5)
+    function pagination(int $rowsPerPage = 5): stdClass
     {
+        $stdclass = new stdClass();
         $raw = $this->finish();
         $pagina = (isset($_GET['page']) ? $_GET['page'] : 1) - 1;
         $offset = $pagina * $rowsPerPage;
         $paginated = $this->order("id", "DESC")->limit($rowsPerPage)->offset($offset)->finish(0);
         $quantitiesOfPages = ceil(count($raw) / $rowsPerPage);
         $links = pagination($quantitiesOfPages);
-        return (object) (
-            [
-                'raw' => $raw,
-                'currentPage' => $pagina  + 1,
-                'offset' => $offset,
-                'paginated' => $paginated,
-                "quantitiesOfPages" => $quantitiesOfPages,
-                'quantitiesPerPage' => $rowsPerPage,
-                'links' => $links
-            ]
-        );
+
+
+        $stdclass->raw = $raw;
+        $stdclass->currentPage = $pagina  + 1;
+        $stdclass->offset = $offset;
+        $stdclass->paginated = $paginated;
+        $stdclass->quantitiesOfPages = $quantitiesOfPages;
+        $stdclass->quantitiesPerPage = $rowsPerPage;
+        $stdclass->links = $links;
+
+        return $stdclass;
     }
 }
